@@ -2,31 +2,51 @@
 
 class Robot:
     """
-        Class Robot is a model of four-leg robot.
-        Each leg has 2 joints. 1st joint can move in two dimensions.
-        2nd joint moves in one only.
+        Class Robot is a model of N-leg robot.
+        Each leg has M joints.
+        Joints can moves in K dimensions.
     """
     
+    def __init__(self, legs):
+        """
+            Init legs by angles' matrix.
+        """
+        for matrix in legs:
+            leg = Leg(matrix);
+            self.legs.append(leg);
     
+    def stability(self):
+        """
+            Check the robot.
+            Is it's position stable?
+        """
+        pass
     
-    def __init__(self, legCount):
-        
+    def onGround(self):
+        """
+            Check the robot.
+            Are all legs on the ground?
+        """
+        pass
 
 class Leg:
     """
-        Class Robot has 4 legs. This is class for it's leg.
-        Class Leg has 2 joints. 1st joint can move in two dimensions.
-        2nd joint moves in one only.
+        Robot's leg.
     """
     
-    def __init__(self, a1, a2, b1):
+    def __init__(self, matrix):
         """
-            a1 and a2 are the angles of 1st joint rotation.
-            b1 is the angle of 2nd joint rotation.
+            matrix[i][j] is the angle of i joint,
+                         in j dimension rotation.
         """
-        self.a1 = a1;
-        self.a2 = a2;
-        self.b1 = b1;
+        self.matrix = matrix;
+    
+    def getVector(self):
+        """
+            Get equivalent vector
+            from robot's body to the ground.
+        """
+        pass
 
 if __name__ == "__main__":
     pass
