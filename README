@@ -1,0 +1,5 @@
+NAME
+    Robo walker - is a mechanism to teach robots walk.
+
+OVERVIEW
+    Robo walker uses genetic algorithm. It uses Robot.py for fitness function.
