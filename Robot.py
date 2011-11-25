@@ -24,6 +24,10 @@ class Robot:
             Is it's position stable?
         """
         [ A, B, C, D ] = self.getGroundConstants( self.legs[0], self.legs[1], self.legs[2] );
+        
+        # All Legs on the ground.
+        self.isAllLegsOnTheGround([ A, B, C, D ]);
+        
         height = Vector( A, B, C );
         
         angles = [];
