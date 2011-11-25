@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
-from math  import sin, cos
-#from numpy import *
+from math import sin, cos, sqrt, acos, degrees
 
 class Robot:
     """
@@ -24,7 +23,35 @@ class Robot:
             Check the robot.
             Is it's position stable?
         """
-        pass
+        [ A, B, C, D ] = self.getGroundConstants( self.legs[0], self.legs[1], self.legs[2] );
+        height = Vector( A, B, C );
+        
+        angles = [];
+        
+        # if sum of 3 angles of 3 fixed points and heigh eq. 360 - it's good.
+        for i in range( len(self.legs) ):
+            for j in range( i + 1, len(self.legs) ):
+                for k in range( j + 1, len(self.legs) ):
+                    # calc angles with caching
+                    if ( angles[i][j] == None ):
+                        angles[i][j] = getAngle( height, self.legs[i], leg1[j] );
+                    if ( angles[j][k] == None ):
+                        angles[j][k] = getAngle( height, self.legs[j], leg1[k] );
+                    if ( angles[i][k] == None ):
+                        angles[j][k] = getAngle( height, self.legs[j], leg1[k] );
+                    
+                    if fabs ( angles[i][j] + angles[j][k] + angles[i][k] - 360 ) < 1:
+                        return True;
+        return False;
+    
+    def isAllLegsOnTheGround(self, ground):
+        [ A, B, C, D ] = ground;
+        
+        for leg in self.legs:
+            if fabs( A * leg.x + B * leg.y + C * leg.z - D ) > 1:
+                return False;
+        
+        return True;
     
     def getGroundConstants(self, Leg1, Leg2, Leg3):
         """
@@ -42,6 +69,16 @@ class Robot:
         D = L1.x * A - L1.y * B + L1.z * C;
         
         return [ A, B, C, D ];
+    
+    def getAngle( height, leg1, leg2 ):
+        a = b = height;
+        a.sub(leg1.vector);
+        b.sub(leg2.vector);
+        
+        angle = degrees(acos ( a.smul(b) / (a.len * b.len) ));
+        angle %= 180;
+        
+        return angle;
 
 class Leg:
     """
@@ -90,6 +127,23 @@ class Vector:
         self.x += vector.x;
         self.y += vector.y;
         self.z += vector.z;
-
+    
+    def sub(self, vector):
+        self.x -= vector.x;
+        self.y -= vector.y;
+        self.z -= vector.z;
+    
+    def abs(self):
+        """
+            |self|
+        """
+        return sqrt( self.x * self.x + self.y * self.y + self.z * self.z );
+    
+    def smul(self, vector):
+        """
+            Scalar multiplication.
+        """
+        return ( self.x * vector.x + self.y * vector.y + self.z * vector.z );
+        
 if __name__ == "__main__":
     pass
