@@ -39,7 +39,7 @@ class Robot:
         B = ( (L2.x - L1.x) * (L3.z - L1.z) - (L2.z - L1.z) * (L3.x - L1.x) );
         C = ( (L2.x - L1.x) * (L3.y - L1.y) - (L2.y - L1.y) * (L3.x - L1.x) );
         
-        D = L1.x * A - L1.x * B + L1.x * C;
+        D = L1.x * A - L1.y * B + L1.z * C;
         
         return [ A, B, C, D ];
 
