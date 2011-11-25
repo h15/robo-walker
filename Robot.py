@@ -26,12 +26,22 @@ class Robot:
         """
         pass
     
-    def onGround(self):
+    def getGroundConstants(self, Leg1, Leg2, Leg3):
         """
-            Check the robot.
-            Are all legs on the ground?
-        """
-        pass
+            Get equation of the plane by 
+            Ax + By + Cz = D
+        """ 
+        L1 = Leg1.vector;
+        L2 = Leg2.vector;
+        L3 = Leg3.vector;
+        
+        A = ( (L2.y - L1.y) * (L3.z - L1.z) - (L2.z - L1.z) * (L3.y - L1.y) );
+        B = ( (L2.x - L1.x) * (L3.z - L1.z) - (L2.z - L1.z) * (L3.x - L1.x) );
+        C = ( (L2.x - L1.x) * (L3.y - L1.y) - (L2.y - L1.y) * (L3.x - L1.x) );
+        
+        D = L1.x * A - L1.x * B + L1.x * C;
+        
+        return [ A, B, C, D ];
 
 class Leg:
     """
