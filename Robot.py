@@ -1,4 +1,12 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
+"""
+    The model of N-leg robot.
+    Will used to finding good pathfinder-algorithm.
+    
+    Copyright: (c) 2011 - 2012 by Georgy Bazhukov.
+    License: GPL v3, see LICENSE for more details.
+"""
 
 from math import sin, cos, sqrt, acos, degrees
 
@@ -9,10 +17,16 @@ class Robot:
         Joints can moves in 2 dimensions.
     """
     
+    #: List of legs. 
+    legs = None;
+    
     def __init__(self, legs):
         """
             Init legs by angles' matrix
             and legs' length vector.
+            
+            Params:
+            legs -- list of robot's legs.
         """
         for matrix in legs:
             leg = Leg(matrix);
@@ -22,6 +36,8 @@ class Robot:
         """
             Check the robot.
             Is it's position stable?
+            
+            Returns: Boolean.
         """
         [ A, B, C, D ] = self.getGroundConstants( self.legs[0], self.legs[1], self.legs[2] );
         
@@ -49,6 +65,14 @@ class Robot:
         return False;
     
     def isAllLegsOnTheGround(self, ground):
+        """
+            Does robot's legs stays on the ground (the same plane).
+            
+            Params:
+            ground -- 3D plane.
+            
+            Returns: Boolean.
+        """
         [ A, B, C, D ] = ground;
         
         for leg in self.legs:
@@ -61,6 +85,12 @@ class Robot:
         """
             Get equation of the plane by 
             Ax + By + Cz = D
+            
+            Params:
+            Leg1, Leg2, Leg3 -- Leg objects.
+            
+            Returns:
+            [A, B, C, D] -- plane of robot's legs bases.
         """ 
         L1 = Leg1.vector;
         L2 = Leg2.vector;
@@ -75,6 +105,17 @@ class Robot:
         return [ A, B, C, D ];
     
     def getAngle( height, leg1, leg2 ):
+        """
+            Not a method.
+            Get angel between two legs.
+            
+            Params:
+            height -- vector (Vector object) from center on robot to legs' bases plane.
+            leg1, leg2 -- Leg objects.
+            
+            Returns:
+            angle -- number.
+        """
         a = b = height;
         a.sub(leg1.vector);
         b.sub(leg2.vector);
@@ -91,9 +132,11 @@ class Leg:
     
     def __init__(self, matrix):
         """
-            matrix[i][0] - phalanx' length.
-            matrix[i][j] - the angle of i joint,
-                           in j - 1 dimension rotation.
+            Params:
+            matrix --
+                matrix[i][0] - phalanx' length.
+                matrix[i][j] - the angle of i joint,
+                               in j - 1 dimension rotation.
         """
         j = Joint(1,0,0);
         self.vector = Vector(0,0,0);
@@ -110,6 +153,12 @@ class Joint:
     """
     
     def __init__(self, length, vertical, horizontal):
+        """
+            Params:
+            length -- number. Length of joint.
+            vertical -- number. Vertical angle of joint position.
+            horizontal -- number. Horizontal angle of joint position.
+        """
         self.length = length;
         self.vertical = vertical;
         self.horizontal = horizontal;
@@ -119,35 +168,61 @@ class Joint:
 
 class Vector:
     """
-        XYZ
+        3D vector.
     """
     
     def __init__(self, x, y, z):
+        """
+            Params:
+            x -- number. X coordinate.
+            y -- number. Y coordinate.
+            z -- number. Z coordinate.
+        """
         self.x = x;
         self.y = y;
         self.z = z;
     
     def add(self, vector):
+        """
+            Sum of two vectors.
+            
+            Params:
+            vector -- Vector object.
+        """
         self.x += vector.x;
         self.y += vector.y;
         self.z += vector.z;
     
     def sub(self, vector):
+        """
+            Subtraction of two vectors.
+            
+            Params:
+            vector -- Vector object.
+        """
         self.x -= vector.x;
         self.y -= vector.y;
         self.z -= vector.z;
     
     def abs(self):
         """
-            |self|
+            Absolute value of this vector.
+            
+            Returns: Number.
         """
         return sqrt( self.x * self.x + self.y * self.y + self.z * self.z );
     
     def smul(self, vector):
         """
             Scalar multiplication.
+            
+            Params:
+            vector -- Vector object.
+            
+            Returns: Number.
         """
         return ( self.x * vector.x + self.y * vector.y + self.z * vector.z );
         
 if __name__ == "__main__":
     pass
+
